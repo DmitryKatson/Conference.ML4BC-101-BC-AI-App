@@ -8,6 +8,7 @@
             //"startupObjectId": 22,
             //"startupObjectType": "Page",
             //"breakOnError": true
+            "schemaUpdateMode": "Recreate"
         }
     ]
 }

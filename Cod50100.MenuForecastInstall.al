@@ -69,6 +69,7 @@ codeunit 50100 "AIR MenuForecast Install"
             exit;
         ItemAttribute.Init;
         ItemAttribute.VALIDATE(Name, MenuTypeName);
+        ItemAttribute.Validate(Type, ItemAttribute.Type::Option);
         ItemAttribute.Insert(true);
     end;
 
