@@ -5,9 +5,9 @@
             "type": "al",
             "request": "launch",
             "name": "Microsoft cloud sandbox",
-            "startupObjectId": 22,
-            "startupObjectType": "Page",
-            "breakOnError": true
+            //"startupObjectId": 22,
+            //"startupObjectType": "Page",
+            //"breakOnError": true
         }
     ]
 }
