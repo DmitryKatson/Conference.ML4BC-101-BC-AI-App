@@ -5,6 +5,7 @@ codeunit 50100 "AIR MenuForecast Install"
     trigger OnInstallAppPerCompany()
     begin
         SetupMenuForecastWithDefaultValues();
+        LoadDemoData();
     end;
 
     local procedure SetupMenuForecastWithDefaultValues()
@@ -122,6 +123,10 @@ codeunit 50100 "AIR MenuForecast Install"
         end;
     end;
 
-
-
+    local procedure LoadDemoData()
+    var
+        MFLoadDemoData: Codeunit "AIR MF Load Demo Data";
+    begin
+        MFLoadDemoData.LoadDemoData();
+    end;
 }
