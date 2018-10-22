@@ -1,0 +1,23 @@
+{
+  "id": "5c3fdf58-2238-4143-aed5-c65ccb8d3a8f",
+  "name": "Restaurant Menu Sales Prediction",
+  "publisher": "Dmitry Katson",
+  "brief": "",
+  "description": "",
+  "version": "1.0.0.0",
+  "privacyStatement": "",
+  "EULA": "",
+  "help": "",
+  "url": "",
+  "logo": "",
+  "capabilities": [],
+  "dependencies": [],
+  "screenshots": [],
+  "platform": "13.0.0.0",
+  "application": "13.0.0.0",
+  "idRange": {
+    "from": 50100,
+    "to": 50149
+  },
+  "runtime": "2.0"
+}
