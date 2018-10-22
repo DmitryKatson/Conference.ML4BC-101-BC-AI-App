@@ -80,52 +80,19 @@ codeunit 50102 "AIR MF Load Demo Data"
     var
         ItemAttributeValueMapping: Record "Item Attribute Value Mapping";
         MFInit: Codeunit "AIR MenuForecast Init";
+        MFItemAttributeMgt: Codeunit "AIR MF Item Attributes Mgt.";
     begin
         with ItemAttributeValueMapping do begin
             "Table ID" := DATABASE::Item;
             "No." := Item."No.";
-            "Item Attribute ID" := GetItemAttributeID(MenuType);
+            "Item Attribute ID" := MFItemAttributeMgt.GetItemAttributeID(MenuType);
             case IsChildrenMenu of
                 true:
-                    "Item Attribute Value ID" := GetItemAttributeValueID("Item Attribute ID", MFInit.GetDefaultChildrenMenuAttributeValue());
+                    "Item Attribute Value ID" := MFItemAttributeMgt.GetItemAttributeValueID("Item Attribute ID", MFInit.GetDefaultChildrenMenuAttributeValue());
                 false:
-                    "Item Attribute Value ID" := GetItemAttributeValueID("Item Attribute ID", MFInit.GetDefaultAdultMenuAttributeValue())
+                    "Item Attribute Value ID" := MFItemAttributeMgt.GetItemAttributeValueID("Item Attribute ID", MFInit.GetDefaultAdultMenuAttributeValue())
             end;
             if Insert(true) then;
         end;
-    end;
-
-    local procedure GetItemAttributeID(AttributeName: Text): Integer
-    var
-        ItemAttribute: Record "Item Attribute";
-    begin
-        if AttributeName = '' then
-            exit(0);
-
-        With ItemAttribute do begin
-            SetFilter(Name, AttributeName);
-            if FindFirst() then
-                exit(ID);
-            exit(0);
-        end;
-    end;
-
-    local procedure GetItemAttributeValueID(AttributeId: Integer; AttributValue: Text): Integer
-    var
-        ItemAttributeValue: Record "Item Attribute Value";
-    begin
-        if AttributeId = 0 then
-            exit(0);
-        if AttributValue = '' then
-            exit(0);
-
-        With ItemAttributeValue do begin
-            SetFilter(Value, AttributValue);
-            SetRange("Attribute ID", AttributeId);
-            if FindFirst() then
-                exit(ID);
-            exit(0);
-        end;
-
     end;
 }

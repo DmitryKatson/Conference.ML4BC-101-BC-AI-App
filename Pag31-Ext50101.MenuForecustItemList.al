@@ -7,21 +7,30 @@ pageextension 50101 "AIR MenuForecustItemList" extends "Item List" //31
 
     actions
     {
-        addafter(Attributes)
+        addafter(Resources)
         {
             group(Restaurant)
             {
                 Visible = MenuForecastIsConfigured;
+                Image = Forecast;
                 action("AIR ShowOnlyMenuItems")
                 {
-                    Caption = 'Show only menu';
-                    Promoted = true;
-                    PromotedOnly = true;
-                    PromotedCategory = Category10;
+                    Caption = 'Show only menu items';
                     Image = AssemblyBOM;
+                    ApplicationArea = All;
                     trigger OnAction()
                     begin
                         ShowOnlyMenuItemsInTheList();
+                    end;
+                }
+                action("AIR UpdateForecast")
+                {
+                    Caption = 'Update Forecast';
+                    Image = Forecast;
+                    ApplicationArea = All;
+                    trigger OnAction()
+                    begin
+                        UpdateRestaurantMenuForecast();
                     end;
                 }
             }
@@ -41,10 +50,7 @@ pageextension 50101 "AIR MenuForecustItemList" extends "Item List" //31
     var
         MFSetup: Record "AIR Menu Forecast Setup";
     begin
-        if not MFSetup.Get() then
-            exit;
-
-        isProperlyConfigured := (MFSetup."Menu Attribute" <> '') and (MFSetup."Menu Item Category" <> '')
+        isProperlyConfigured := MFSetup.IsMenuForecastProperlyConfigured();
     end;
 
     local procedure ShowOnlyMenuItemsInTheList()
@@ -58,5 +64,10 @@ pageextension 50101 "AIR MenuForecustItemList" extends "Item List" //31
             exit;
 
         SetRange("Item Category Code", MFSetup."Menu Item Category");
+    end;
+
+    local procedure UpdateRestaurantMenuForecast()
+    begin
+        UpdateRestaurantMenuForecastForAllMenuItems();
     end;
 }
