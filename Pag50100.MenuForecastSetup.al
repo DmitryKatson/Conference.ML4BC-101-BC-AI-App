@@ -3,7 +3,7 @@ page 50100 "AIR Menu Forecast Setup"
 
     PageType = Card;
     SourceTable = "AIR Menu Forecast Setup";
-    Caption = 'AIR Menu Forecast Setup';
+    Caption = 'Menu Items Sales Forecast Setup';
     UsageCategory = Administration;
     ApplicationArea = All;
 
