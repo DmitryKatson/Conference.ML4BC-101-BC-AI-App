@@ -78,7 +78,7 @@ codeunit 50103 "AIR MenuForecast Calculate"
         AzureMLConnector.SendToAzureML(false);
 
         IF AzureMLConnector.GetOutput(1, 1, PredictionSales) then
-            message(PredictionSales)//do something;
+            PopulateForecastResult(Item."No.", ForecastDate, PredictionSales)
     end;
 
     local procedure CheckIfItemMenuBelongsToChildrenMenu(Item: Record Item): Integer
@@ -89,5 +89,14 @@ codeunit 50103 "AIR MenuForecast Calculate"
         if MFItemAttributesMgt.GetMenuTypeValueFromItem(Item) = MFInit.GetDefaultChildrenMenuAttributeValue() then
             exit(1);
         exit(0);
+    end;
+
+    local procedure PopulateForecastResult(ItemNo: Code[20]; ForecastDate: Date; PredictionSales: Text)
+    var
+        PredictionValue: Decimal;
+        MFPopulate: Codeunit "AIR MenuForecastPopulate";
+    begin
+        Evaluate(PredictionValue, PredictionSales);
+        MFPopulate.PopulateForecastResult(ItemNo, ForecastDate, PredictionValue);
     end;
 }
