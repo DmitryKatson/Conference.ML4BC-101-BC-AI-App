@@ -7,44 +7,56 @@ codeunit 50102 "AIR MF Load Demo Data"
 
     local procedure DoLoadDemoData()
     begin
-        InsertMenuItem('34', 'rice pudding', true);
-        InsertMenuItem('12', 'Fruit', true);
-        InsertMenuItem('18', 'Oranges', true);
-        InsertMenuItem('32', 'Sweet Potatoes', true);
-        InsertMenuItem('4 ', 'Chicken Sandwich', true);
-        InsertMenuItem('23', 'STRAWBERRY ICE CREAM', true);
-        InsertMenuItem('29', 'Sliced Tomatoes', true);
-        InsertMenuItem('14', 'Milk', true);
-        InsertMenuItem('13', 'Grapes', true);
-        InsertMenuItem('11', 'French fried potatoes', true);
-        InsertMenuItem('24', 'Sardines', false);
-        InsertMenuItem('25', 'Sauterne', false);
-        InsertMenuItem('26', 'Scrambled Eggs', false);
-        InsertMenuItem('21', 'Plums', false);
-        InsertMenuItem('27', 'Shrimp Cocktail', false);
-        InsertMenuItem('28', 'Shrimp Salad', false);
-        InsertMenuItem('30', 'Stewed Corn', false);
-        InsertMenuItem('31', 'Stewed Prunes', false);
-        InsertMenuItem('33', 'Tea', false);
-        InsertMenuItem('22', 'ROQUEFORT CHEESE', false);
-        InsertMenuItem('0 ', 'Biscuit Tortoni', false);
-        InsertMenuItem('20', 'Pear', false);
-        InsertMenuItem('19', 'Oyster cocktail', false);
-        InsertMenuItem('1 ', 'Blue Point Oysters', false);
-        InsertMenuItem('16', 'Orange Juice', false);
-        InsertMenuItem('15', 'Nesselrode Pudding', false);
-        InsertMenuItem('10', 'Dessert', false);
-        InsertMenuItem('9 ', 'Cream Cheese', false);
-        InsertMenuItem('8 ', 'Crackers', false);
-        InsertMenuItem('7 ', 'Crab Flake Cocktail', false);
-        InsertMenuItem('6 ', 'Corned Beef Hash', false);
-        InsertMenuItem('5 ', 'Chocolate Ice Cream', false);
-        InsertMenuItem('3 ', 'Boiled potatoes', false);
-        InsertMenuItem('2 ', 'Boiled eggs', false);
-        InsertMenuItem('17', 'Orange marmalade', false);
+        DeleteAllDemoItems();
+
+        InsertMenuItem('34', 'rice pudding', true, 198);
+        InsertMenuItem('12', 'Fruit', true, 116);
+        InsertMenuItem('18', 'Oranges', true, 189);
+        InsertMenuItem('32', 'Sweet Potatoes', true, 178);
+        InsertMenuItem('4 ', 'Chicken Sandwich', true, 134);
+        InsertMenuItem('23', 'STRAWBERRY ICE CREAM', true, 65);
+        InsertMenuItem('29', 'Sliced Tomatoes', true, 131);
+        InsertMenuItem('14', 'Milk', true, 113);
+        InsertMenuItem('13', 'Grapes', true, 145);
+        InsertMenuItem('11', 'French fried potatoes', true, 64);
+        InsertMenuItem('24', 'Sardines', false, 67);
+        InsertMenuItem('25', 'Sauterne', false, 77);
+        InsertMenuItem('26', 'Scrambled Eggs', false, 190);
+        InsertMenuItem('21', 'Plums', false, 87);
+        InsertMenuItem('27', 'Shrimp Cocktail', false, 133);
+        InsertMenuItem('28', 'Shrimp Salad', false, 180);
+        InsertMenuItem('30', 'Stewed Corn', false, 91);
+        InsertMenuItem('31', 'Stewed Prunes', false, 122);
+        InsertMenuItem('33', 'Tea', false, 158);
+        InsertMenuItem('22', 'ROQUEFORT CHEESE', false, 81);
+        InsertMenuItem('0 ', 'Biscuit Tortoni', false, 163);
+        InsertMenuItem('20', 'Pear', false, 87);
+        InsertMenuItem('19', 'Oyster cocktail', false, 79);
+        InsertMenuItem('1 ', 'Blue Point Oysters', false, 161);
+        InsertMenuItem('16', 'Orange Juice', false, 183);
+        InsertMenuItem('15', 'Nesselrode Pudding', false, 82);
+        InsertMenuItem('10', 'Dessert', false, 149);
+        InsertMenuItem('9 ', 'Cream Cheese', false, 127);
+        InsertMenuItem('8 ', 'Crackers', false, 66);
+        InsertMenuItem('7 ', 'Crab Flake Cocktail', false, 76);
+        InsertMenuItem('6 ', 'Corned Beef Hash', false, 135);
+        InsertMenuItem('5 ', 'Chocolate Ice Cream', false, 167);
+        InsertMenuItem('3 ', 'Boiled potatoes', false, 172);
+        InsertMenuItem('2 ', 'Boiled eggs', false, 113);
+        InsertMenuItem('17', 'Orange marmalade', false, 70);
+
+        DeleteAllEvents();
+
+        InsertEvent(CalcDate('<3D>', WorkDate()), 1, '');
+        InsertEvent(CalcDate('<2D>', WorkDate()), 2, '');
+        InsertEvent(CalcDate('<5D>', WorkDate()), 3, 'City Lights');
+        InsertEvent(CalcDate('<6D>', WorkDate()), 3, 'The V Festival');
+        InsertEvent(CalcDate('<7D>', WorkDate()), 3, 'Wirless Festival');
+        InsertEvent(CalcDate('<7D>', WorkDate()), 2, '');
+
     end;
 
-    local procedure InsertMenuItem(ExternalID: Code[20]; Name: Text[250]; IsChildrenMenu: Boolean)
+    local procedure InsertMenuItem(ExternalID: Code[20]; Name: Text[250]; IsChildrenMenu: Boolean; MaxQtyOnStock: Decimal)
     var
         Item: Record Item;
         MFSetup: Record "AIR Menu Forecast Setup";
@@ -62,6 +74,7 @@ codeunit 50102 "AIR MF Load Demo Data"
             Validate(Description, Name);
             Validate("Item Category Code", MFSetup."Menu Item Category");
             Validate("No. 2", ExternalID);
+            Validate("Maximum Inventory", MaxQtyOnStock);
             InsertItemAttributeValueMapping(Item, MFSetup."Menu Attribute", IsChildrenMenu);
             Modify(true);
         end;
@@ -93,6 +106,40 @@ codeunit 50102 "AIR MF Load Demo Data"
                     "Item Attribute Value ID" := MFItemAttributeMgt.GetItemAttributeValueID("Item Attribute ID", MFInit.GetDefaultAdultMenuAttributeValue())
             end;
             if Insert(true) then;
+        end;
+    end;
+
+    local procedure DeleteAllDemoItems()
+    var
+        Item: Record Item;
+        MFSetup: Record "AIR Menu Forecast Setup";
+    begin
+        if not MFSetup.IsMenuForecastProperlyConfigured() then
+            exit;
+        Item.SetRange("Item Category Code", MFSetup."Menu Item Category");
+        If Item.FindSet() then
+            repeat
+                if Item.Delete(true) then;
+            until Item.Next() = 0;
+    end;
+
+    local procedure DeleteAllEvents()
+    var
+        MFEvents: Record "AIR MF Event Schedule";
+    begin
+        MFEvents.DeleteAll(true);
+    end;
+
+    local procedure InsertEvent(EventDate: Date; EventType: Integer; EventName: Text[50])
+    var
+        MFEvents: Record "AIR MF Event Schedule";
+    begin
+        with MFEvents do begin
+            Init();
+            "Event Date" := EventDate;
+            "Event Type" := EventType;
+            "Event Name" := EventName;
+            Insert();
         end;
     end;
 }

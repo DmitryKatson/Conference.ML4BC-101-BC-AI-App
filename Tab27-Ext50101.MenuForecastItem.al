@@ -1,6 +1,5 @@
 tableextension 50101 "AIR MenuForecastItem" extends Item //27
 {
-
     procedure UpdateRestaurantMenuForecastForAllMenuItems()
     var
         MFCalculate: Codeunit "AIR MenuForecast Calculate";

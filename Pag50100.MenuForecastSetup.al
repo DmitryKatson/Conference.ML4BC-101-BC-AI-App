@@ -36,5 +36,17 @@ page 50100 "AIR Menu Forecast Setup"
             }
         }
     }
+    actions
+    {
+        area(Navigation)
+        {
+            action("Events")
+            {
+                ApplicationArea = All;
+                Image = DueDate;
+                RunObject = page "AIR MF Event Schedule List";
+            }
+        }
+    }
 
 }

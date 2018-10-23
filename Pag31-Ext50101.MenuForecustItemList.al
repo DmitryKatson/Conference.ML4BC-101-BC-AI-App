@@ -2,9 +2,15 @@ pageextension 50101 "AIR MenuForecustItemList" extends "Item List" //31
 {
     layout
     {
-
+        moveafter(Inventory; "Item Category Code")
+        addafter("Item Category Code")
+        {
+            field("Maximum Inventory"; "Maximum Inventory")
+            {
+                ApplicationArea = All;
+            }
+        }
     }
-
     actions
     {
         addafter(Resources)
