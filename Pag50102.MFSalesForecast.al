@@ -3,6 +3,7 @@ page 50102 "AIR MF Sales Forecast"
     Caption = 'MF Sales Forecast';
     PageType = List;
     SourceTable = "MS - Sales Forecast";
+    Editable = false;
 
     layout
     {
