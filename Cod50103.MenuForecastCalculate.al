@@ -70,10 +70,10 @@ codeunit 50103 "AIR MenuForecast Calculate"
         AzureMLConnector.AddInputValue(Format(Item.GetCurrentInventory));
         AzureMLConnector.AddInputValue(Item."No. 2");
         AzureMLConnector.AddInputValue(Format(CheckIfItemMenuBelongsToChildrenMenu(Item)));
-        AzureMLConnector.AddInputValue(''); //modify that
-        AzureMLConnector.AddInputValue('0'); //modify that
-        AzureMLConnector.AddInputValue('0'); //modify that
-        AzureMLConnector.AddInputValue('0'); //modify that
+        AzureMLConnector.AddInputValue(GetFestivalName(ForecastDate));
+        AzureMLConnector.AddInputValue(Format(CheckIfChildrenEvent(ForecastDate)));
+        AzureMLConnector.AddInputValue(Format(CheckIfMusicEvent(ForecastDate)));
+        AzureMLConnector.AddInputValue(Format(Item."Maximum Inventory"));
 
         AzureMLConnector.SendToAzureML(false);
 
@@ -89,6 +89,33 @@ codeunit 50103 "AIR MenuForecast Calculate"
         if MFItemAttributesMgt.GetMenuTypeValueFromItem(Item) = MFInit.GetDefaultChildrenMenuAttributeValue() then
             exit(1);
         exit(0);
+    end;
+
+    local procedure GetFestivalName(ForecastDate: Date): Text
+    var
+        MFEvent: Record "AIR MF Event Schedule";
+    begin
+        IF Not MFEvent.Get(ForecastDate, MFEvent."Event Type"::Festival) then
+            exit('');
+        exit(MFEvent."Event Name");
+    end;
+
+    local procedure CheckIfChildrenEvent(ForecastDate: Date): Integer
+    var
+        MFEvent: Record "AIR MF Event Schedule";
+    begin
+        IF Not MFEvent.Get(ForecastDate, MFEvent."Event Type"::"Children Event") then
+            exit(0);
+        exit(1);
+    end;
+
+    local procedure CheckIfMusicEvent(ForecastDate: Date): Integer
+    var
+        MFEvent: Record "AIR MF Event Schedule";
+    begin
+        IF Not MFEvent.Get(ForecastDate, MFEvent."Event Type"::"Music Event") then
+            exit(0);
+        exit(1);
     end;
 
     local procedure PopulateForecastResult(ItemNo: Code[20]; ForecastDate: Date; PredictionSales: Text)
