@@ -90,6 +90,8 @@ codeunit 50102 "AIR MF Load Demo Data"
             Validate("Maximum Inventory", MaxQtyOnStock);
             InsertItemAttributeValueMapping(Item, MFSetup."Menu Attribute", IsChildrenMenu);
             Validate("Base Unit of Measure", 'Pack');
+            Validate("Gen. Prod. Posting Group", 'RETAIL');
+            Validate("Inventory Posting Group", 'RESALE');
             Modify(true);
         end;
     end;

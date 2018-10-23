@@ -19,15 +19,27 @@ pageextension 50102 "AIR MenuForecast SalesForecast" extends "Sales Forecast"
         {
             Visible = false;
         }
-        modify("Show Sales Forecast")
+        //modify("Show Sales Forecast")
+        //{
+            //trigger OnAfterAction()
+            //var
+            //    MFForecast: Record "MS - Sales Forecast";
+            //begin
+            //    MFForecast.SetRange("Item No.", rec."No.");
+            //    Page.Run(Page::"AIR MF Sales Forecast", MFForecast);
+            //end;
+        //}
+        addfirst(processing)
         {
-            trigger OnAfterAction()
-            var
-                MFForecast: Record "MS - Sales Forecast";
-            begin
-                MFForecast.SetRange("Item No.", rec."No.");
-                Page.Run(Page::"AIR MF Sales Forecast", MFForecast);
-            end;
+            action("Menu Forecast Update")
+            {
+                Image = Forecast;
+                ApplicationArea = All;
+                trigger OnAction()
+                begin
+                    UpdateRestaurantMenuForecast();
+                end;
+            }
         }
 
         addafter("Forecast Settings")
@@ -46,5 +58,4 @@ pageextension 50102 "AIR MenuForecast SalesForecast" extends "Sales Forecast"
             }
         }
     }
-
 }
