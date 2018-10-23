@@ -47,9 +47,13 @@ codeunit 50103 "AIR MenuForecast Calculate"
         APIKey: text;
         Uri: Text;
         PredictionSales: Text;
+        MFSetup: Record "AIR Menu Forecast Setup";
     begin
-        APIKey := '0I/iD1LnQqY0GW+dR/qgMC0QptWyLi97afaUBic2G5VYBHeNtq53SPfRShMApY3O4Exi5BBIjToQer6o1e+vbQ==';
-        Uri := 'https://europewest.services.azureml.net/subscriptions/57b61b3f20b1400ea1d2c8d894e54803/services/37be88c18f35472d8f09c0d3294b84ab/execute?api-version=2.0&details=true';
+        if Not MFSetup.IsMenuForecastProperlyConfigured() then
+            exit;
+
+        APIKey := MFSetup."API Key ID";
+        Uri := MFSetup."API URI";
 
         AzureMLConnector.Initialize(APIKey, Uri, 30);
         AzureMLConnector.SetInputName('input1');

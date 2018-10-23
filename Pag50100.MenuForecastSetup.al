@@ -13,10 +13,6 @@ page 50100 "AIR Menu Forecast Setup"
         {
             group(General)
             {
-                field("Primary Key"; "Primary Key")
-                {
-                    ApplicationArea = All;
-                }
                 field("API URI"; "API URI")
                 {
                     ApplicationArea = All;

@@ -2,13 +2,12 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Your own server",
             "type": "al",
             "request": "launch",
-            "name": "Microsoft cloud sandbox",
-            //"startupObjectId": 22,
-            //"startupObjectType": "Page",
-            //"breakOnError": true
-            "schemaUpdateMode": "Synchronize"
+            "server": "http://BC-Current-US",
+            "serverInstance": "nav",
+            "authentication": "UserPassword"
         }
     ]
 }

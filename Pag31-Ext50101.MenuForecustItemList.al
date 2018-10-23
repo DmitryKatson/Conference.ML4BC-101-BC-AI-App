@@ -13,7 +13,12 @@ pageextension 50101 "AIR MenuForecustItemList" extends "Item List" //31
     }
     actions
     {
-        addafter(Resources)
+        modify(Forecast)
+        {
+            Visible = false;
+        }
+
+        addafter(Forecast)
         {
             group(Restaurant)
             {
@@ -38,6 +43,14 @@ pageextension 50101 "AIR MenuForecustItemList" extends "Item List" //31
                     begin
                         UpdateRestaurantMenuForecast();
                     end;
+                }
+                action("AIR OpenForecast")
+                {
+                    Caption = 'Open Forecast';
+                    Image = OrderPromising;
+                    ApplicationArea = All;
+                    RunObject = page "AIR MF Sales Forecast";
+                    RunPageLink = "Item No." = field ("No.");
                 }
             }
         }

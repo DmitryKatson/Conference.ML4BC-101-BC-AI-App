@@ -7,6 +7,8 @@ codeunit 50102 "AIR MF Load Demo Data"
 
     local procedure DoLoadDemoData()
     begin
+        ConfigureWithDefaultMLEndPoint();
+
         DeleteAllDemoItems();
 
         InsertMenuItem('34', 'rice pudding', true, 198);
@@ -56,6 +58,17 @@ codeunit 50102 "AIR MF Load Demo Data"
 
     end;
 
+    local procedure ConfigureWithDefaultMLEndPoint()
+    var
+        MFSetup: Record "AIR Menu Forecast Setup";
+    begin
+        if not MFSetup.Get() then
+            exit;
+        MFSetup."API Key ID" := '0I/iD1LnQqY0GW+dR/qgMC0QptWyLi97afaUBic2G5VYBHeNtq53SPfRShMApY3O4Exi5BBIjToQer6o1e+vbQ==';
+        MFSetup."API URI" := 'https://europewest.services.azureml.net/subscriptions/57b61b3f20b1400ea1d2c8d894e54803/services/37be88c18f35472d8f09c0d3294b84ab/execute?api-version=2.0&details=true';
+        MFSetup.Modify();
+    end;
+
     local procedure InsertMenuItem(ExternalID: Code[20]; Name: Text[250]; IsChildrenMenu: Boolean; MaxQtyOnStock: Decimal)
     var
         Item: Record Item;
@@ -76,6 +89,7 @@ codeunit 50102 "AIR MF Load Demo Data"
             Validate("No. 2", ExternalID);
             Validate("Maximum Inventory", MaxQtyOnStock);
             InsertItemAttributeValueMapping(Item, MFSetup."Menu Attribute", IsChildrenMenu);
+            Validate("Base Unit of Measure", 'Pack');
             Modify(true);
         end;
     end;

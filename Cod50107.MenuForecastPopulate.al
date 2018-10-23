@@ -18,7 +18,7 @@ codeunit 50107 "AIR MenuForecastPopulate"
     begin
         with TempTimeSeriesForecast do begin
             Init();
-            "Group ID" := 'AIRMF';
+            "Group ID" := ItemNo;
             //"Period No." := //do here
             "Period Start Date" := ForecastDate;
             Value := PredictionValue;

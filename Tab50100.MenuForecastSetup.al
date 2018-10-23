@@ -49,7 +49,7 @@ table 50100 "AIR Menu Forecast Setup"
     procedure IsMenuForecastProperlyConfigured(): Boolean
     var
     begin
-        if Get() then
+        if not Get() then
             exit(false);
 
         Exit(("Menu Attribute" <> '') and ("Menu Item Category" <> ''))
