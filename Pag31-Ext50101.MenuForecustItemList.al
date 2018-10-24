@@ -63,6 +63,7 @@ pageextension 50101 "AIR MenuForecustItemList" extends "Item List" //31
     trigger OnOpenPage()
     begin
         GetIfMenuForecastIsConfigured(MenuForecastIsConfigured);
+        WorkDate(Today())
     end;
 
     local procedure GetIfMenuForecastIsConfigured(var isProperlyConfigured: Boolean)

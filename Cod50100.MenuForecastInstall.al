@@ -4,9 +4,21 @@ codeunit 50100 "AIR MenuForecast Install"
 
     trigger OnInstallAppPerCompany()
     begin
+        if not isEvaluationCompany() then
+            exit;
+
         SetupMenuForecastWithDefaultValues();
         LoadDemoData();
     end;
+
+    local procedure isEvaluationCompany(): Boolean
+    var
+        Company: Record Company;
+    begin
+        Company.Get(CompanyName());
+        exit(Company."Evaluation Company");
+    end;
+
 
     local procedure SetupMenuForecastWithDefaultValues()
     begin

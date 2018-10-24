@@ -15,20 +15,6 @@ pageextension 50102 "AIR MenuForecast SalesForecast" extends "Sales Forecast"
         {
             Visible = false;
         }
-        modify("Show Inventory Forecast")
-        {
-            Visible = false;
-        }
-        modify("Show Sales Forecast")
-        {
-            trigger OnAfterAction()
-            var
-                MFForecast: Record "MS - Sales Forecast";
-            begin
-                MFForecast.SetRange("Item No.", rec."No.");
-                Page.Run(Page::"AIR MF Sales Forecast", MFForecast);
-            end;
-        }
         addfirst(processing)
         {
             action("Menu Forecast Update")

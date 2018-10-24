@@ -110,25 +110,33 @@ codeunit 50102 "AIR MF Load Demo Data"
         if not PostDemoEntries then
             exit;
 
-        PostDemoItemLedgerEntries(Item."No.", Round(MaxQtyOnStock * 3, 1), CalcDate('<-1D>', WorkDate()), 0);
-        PostDemoItemLedgerEntries(Item."No.", Round(MaxQtyOnStock * 0.9, 1), CalcDate('<-1D>', WorkDate()), 1);
-        PostDemoItemLedgerEntries(Item."No.", Round(MaxQtyOnStock * 0.8, 1), CalcDate('<-2D>', WorkDate()), 1);
-        PostDemoItemLedgerEntries(Item."No.", Round(MaxQtyOnStock * 0.6, 1), CalcDate('<-3D>', WorkDate()), 1);
-        PostDemoItemLedgerEntries(Item."No.", Round(MaxQtyOnStock * 1.5, 1), CalcDate('<-4D>', WorkDate()), 1);
-        PostDemoItemLedgerEntries(Item."No.", Round(MaxQtyOnStock * 1.2, 1), CalcDate('<-5D>', WorkDate()), 1);
+        PostDemoItemLedgerEntries(Item."No.", Round(MaxQtyOnStock * 8, 1), CalcDate('<-6D>', WorkDate()), 0, 10000);
+        PostDemoItemLedgerEntries(Item."No.", Round(MaxQtyOnStock * 0.9, 1), CalcDate('<-1D>', WorkDate()), 1, 20000);
+        PostDemoItemLedgerEntries(Item."No.", Round(MaxQtyOnStock * 0.8, 1), CalcDate('<-2D>', WorkDate()), 1, 30000);
+        PostDemoItemLedgerEntries(Item."No.", Round(MaxQtyOnStock * 0.6, 1), CalcDate('<-3D>', WorkDate()), 1, 40000);
+        PostDemoItemLedgerEntries(Item."No.", Round(MaxQtyOnStock * 1.5, 1), CalcDate('<-4D>', WorkDate()), 1, 50000);
+        PostDemoItemLedgerEntries(Item."No.", Round(MaxQtyOnStock * 1.2, 1), CalcDate('<-5D>', WorkDate()), 1, 60000);
     end;
 
-    local procedure PostDemoItemLedgerEntries(ItemNo: Code[20]; Qty: Decimal; PostingDate: date; EntryType: Integer);
+    local procedure PostDemoItemLedgerEntries(ItemNo: Code[20]; Qty: Decimal; PostingDate: date; EntryType: Integer; LineNo: Integer);
     var
         ItemJnlLine: Record "Item Journal Line";
-
+        ItemJnlMgt: Codeunit ItemJnlManagement;
+        JnlSelected: Boolean;
+        CurrentJnlBatchName: Code[10];
     begin
+        ItemJnlMgt.TemplateSelection(PAGE::"Item Journal", 0, FALSE, ItemJnlLine, JnlSelected);
+        IF NOT JnlSelected then
+            exit;
+        ItemJnlMgt.OpenJnl(CurrentJnlBatchName, ItemJnlLine);
+
+
         with ItemJnlLine do begin
             Init();
             Validate("Journal Template Name", 'ITEM');
             Validate("Journal Batch Name", 'DEFAULT');
             SetUpNewLine(ItemJnlLine);
-            Validate("Line No.", 10000);
+            Validate("Line No.", LineNo);
             Validate("Item No.", ItemNo);
             Validate("Entry Type", EntryType);
             Validate("Document No.", ItemNo);
@@ -137,7 +145,7 @@ codeunit 50102 "AIR MF Load Demo Data"
             Insert(true);
         end;
 
-        CODEUNIT.RUN(CODEUNIT::"Item Jnl.-Post", ItemJnlLine);
+        CODEUNIT.RUN(CODEUNIT::"Item Jnl.-Post Line", ItemJnlLine);
     end;
 
     local procedure isMenuItemAlreadyEsist(ExternalID: Code[20]; CategoryCode: Code[20]): Boolean
