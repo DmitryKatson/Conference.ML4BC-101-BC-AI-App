@@ -10,7 +10,6 @@ codeunit 50107 "AIR MenuForecastPopulate"
         TempTimeSeriesForecast: Record "Time Series Forecast" temporary;
         MSSalesForecast: Record "MS - Sales Forecast";
     begin
-        PrepareForecast(ItemNo);
         LoadTimeSeriesForecast(ItemNo, ForecastDate, PredictionValue, TempTimeSeriesForecast);
         MSSalesForecast.PopulateForecastResult(TempTimeSeriesForecast);
     end;

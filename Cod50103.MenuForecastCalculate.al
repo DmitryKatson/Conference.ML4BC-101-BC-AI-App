@@ -30,7 +30,10 @@ codeunit 50103 "AIR MenuForecast Calculate"
     var
         TimeSeries: Record Date;
         ForecastStartDate: Date;
+        MenuForecastPopulate: Codeunit "AIR MenuForecastPopulate";
     begin
+        MenuForecastPopulate.PrepareForecast(Item."No.");
+
         ForecastStartDate := WorkDate();
 
         TimeSeries.Setrange("Period Type", TimeSeries."Period Type"::Date);
