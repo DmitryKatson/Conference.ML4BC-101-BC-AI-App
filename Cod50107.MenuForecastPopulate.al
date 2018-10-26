@@ -15,7 +15,7 @@ codeunit 50107 "AIR MenuForecastPopulate"
         MSSalesForecast.PopulateForecastResult(TempTimeSeriesForecast);
     end;
 
-    local procedure PrepareForecast(ItemNo: Code[20])
+    procedure PrepareForecast(ItemNo: Code[20])
     var
         MSSalesForecast: Record "MS - Sales Forecast";
     begin

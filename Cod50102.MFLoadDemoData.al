@@ -182,12 +182,14 @@ codeunit 50102 "AIR MF Load Demo Data"
         Item: Record Item;
         MFSetup: Record "AIR Menu Forecast Setup";
         ItemLedgEntry: Record "Item Ledger Entry";
+        MenuForecastPopulate: Codeunit "AIR MenuForecastPopulate";
     begin
         if not MFSetup.IsMenuForecastProperlyConfigured() then
             exit;
         Item.SetRange("Item Category Code", MFSetup."Menu Item Category");
         If Item.FindSet() then
             repeat
+                MenuForecastPopulate.PrepareForecast(Item."No.");
                 ItemLedgEntry.SetRange("Item No.", Item."No.");
                 if ItemLedgEntry.IsEmpty() then
                     Item.Delete(true);
