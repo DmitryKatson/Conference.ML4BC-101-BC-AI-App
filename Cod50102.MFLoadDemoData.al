@@ -14,7 +14,7 @@ codeunit 50102 "AIR MF Load Demo Data"
         DeleteAllDemoItems();
 
         InsertMenuItem('34', 'rice pudding', true, 198, true);
-        InsertMenuItem('12', 'Fruit', true, 116, false);
+        InsertMenuItem('12', 'Fruit', true, 116, true);
         InsertMenuItem('18', 'Oranges', true, 189, false);
         InsertMenuItem('32', 'Sweet Potatoes', true, 178, false);
         InsertMenuItem('4 ', 'Chicken Sandwich', true, 134, false);
@@ -111,11 +111,11 @@ codeunit 50102 "AIR MF Load Demo Data"
             exit;
 
         PostDemoItemLedgerEntries(Item."No.", Round(MaxQtyOnStock * 8, 1), CalcDate('<-6D>', WorkDate()), 0, 10000);
-        PostDemoItemLedgerEntries(Item."No.", Round(MaxQtyOnStock * 0.9, 1), CalcDate('<-1D>', WorkDate()), 1, 20000);
-        PostDemoItemLedgerEntries(Item."No.", Round(MaxQtyOnStock * 0.8, 1), CalcDate('<-2D>', WorkDate()), 1, 30000);
-        PostDemoItemLedgerEntries(Item."No.", Round(MaxQtyOnStock * 0.6, 1), CalcDate('<-3D>', WorkDate()), 1, 40000);
-        PostDemoItemLedgerEntries(Item."No.", Round(MaxQtyOnStock * 1.5, 1), CalcDate('<-4D>', WorkDate()), 1, 50000);
-        PostDemoItemLedgerEntries(Item."No.", Round(MaxQtyOnStock * 1.2, 1), CalcDate('<-5D>', WorkDate()), 1, 60000);
+        PostDemoItemLedgerEntries(Item."No.", Round(MaxQtyOnStock * 0.9, 1), CalcDate('<-1D>', WorkDate()), 1, 10000);
+        PostDemoItemLedgerEntries(Item."No.", Round(MaxQtyOnStock * 0.8, 1), CalcDate('<-2D>', WorkDate()), 1, 10000);
+        PostDemoItemLedgerEntries(Item."No.", Round(MaxQtyOnStock * 0.6, 1), CalcDate('<-3D>', WorkDate()), 1, 10000);
+        PostDemoItemLedgerEntries(Item."No.", Round(MaxQtyOnStock * 1.5, 1), CalcDate('<-4D>', WorkDate()), 1, 10000);
+        PostDemoItemLedgerEntries(Item."No.", Round(MaxQtyOnStock * 1.2, 1), CalcDate('<-5D>', WorkDate()), 1, 10000);
     end;
 
     local procedure PostDemoItemLedgerEntries(ItemNo: Code[20]; Qty: Decimal; PostingDate: date; EntryType: Integer; LineNo: Integer);
@@ -130,6 +130,7 @@ codeunit 50102 "AIR MF Load Demo Data"
             exit;
         ItemJnlMgt.OpenJnl(CurrentJnlBatchName, ItemJnlLine);
 
+        DeleteAllItemJnlLines('ITEM', 'DEFAULT');
 
         with ItemJnlLine do begin
             Init();
@@ -146,6 +147,15 @@ codeunit 50102 "AIR MF Load Demo Data"
         end;
 
         CODEUNIT.RUN(CODEUNIT::"Item Jnl.-Post Line", ItemJnlLine);
+    end;
+
+    local procedure DeleteAllItemJnlLines(TemplateName: Code[20]; BatchName: code[20])
+    var
+        ItemJnlLine: Record "Item Journal Line";
+    begin
+        ItemJnlLine.SetRange("Journal Template Name", TemplateName);
+        ItemJnlLine.SetRange("Journal Batch Name", BatchName);
+        ItemJnlLine.DeleteAll(true);
     end;
 
     local procedure isMenuItemAlreadyEsist(ExternalID: Code[20]; CategoryCode: Code[20]): Boolean
