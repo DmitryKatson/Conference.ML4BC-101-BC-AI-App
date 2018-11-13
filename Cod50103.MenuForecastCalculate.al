@@ -62,31 +62,17 @@ codeunit 50103 "AIR MenuForecast Calculate"
         AzureMLConnector.SetInputName('input1');
         AzureMLConnector.SetOutputName('output1');
 
-        AzureMLConnector.AddInputColumnName('date');
-
-        AzureMLConnector.AddInputColumnName('date');
-        AzureMLConnector.AddInputColumnName('stock_count');
-        AzureMLConnector.AddInputColumnName('menu_item_id');
-        AzureMLConnector.AddInputColumnName('in_children_menu');
-        AzureMLConnector.AddInputColumnName('fest_name');
-        AzureMLConnector.AddInputColumnName('Children_Event');
-        AzureMLConnector.AddInputColumnName('Music_Event');
-        AzureMLConnector.AddInputColumnName('max_stock_quantity');
+        AzureMLConnector.AddInputColumnName(); //fill column label here
+        // repeat the same for all columns in the API input schema
 
         AzureMLConnector.AddInputRow();
 
-        AzureMLConnector.AddInputValue(Format(ForecastDate));
-        AzureMLConnector.AddInputValue(Format(Item.GetCurrentInventory));
-        AzureMLConnector.AddInputValue(Item."No. 2");
-        AzureMLConnector.AddInputValue(Format(CheckIfItemMenuBelongsToChildrenMenu(Item)));
-        AzureMLConnector.AddInputValue(GetFestivalName(ForecastDate));
-        AzureMLConnector.AddInputValue(Format(CheckIfChildrenEvent(ForecastDate)));
-        AzureMLConnector.AddInputValue(Format(CheckIfMusicEvent(ForecastDate)));
-        AzureMLConnector.AddInputValue(Format(Item."Maximum Inventory"));
+        AzureMLConnector.AddInputValue(); //fill column value here
+        // repeat the same for all columns in the API input schema
 
         AzureMLConnector.SendToAzureML(false);
 
-        IF AzureMLConnector.GetOutput(1, 1, PredictionSales) then
+        IF AzureMLConnector.GetOutput(1, 1, PredictionSales) then //change AML output schema, if needed
             PopulateForecastResult(Item."No.", ForecastDate, PredictionSales)
     end;
 
