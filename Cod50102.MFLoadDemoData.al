@@ -66,8 +66,8 @@ codeunit 50102 "AIR MF Load Demo Data"
     begin
         if not MFSetup.Get() then
             exit;
-        MFSetup."API Key ID" := '0I/iD1LnQqY0GW+dR/qgMC0QptWyLi97afaUBic2G5VYBHeNtq53SPfRShMApY3O4Exi5BBIjToQer6o1e+vbQ==';
-        MFSetup."API URI" := 'https://europewest.services.azureml.net/subscriptions/57b61b3f20b1400ea1d2c8d894e54803/services/37be88c18f35472d8f09c0d3294b84ab/execute?api-version=2.0&details=true';
+        MFSetup."API Key ID" := ''; //insert API Key here from AML WS
+        MFSetup."API URI" := '';  //insert API URI here from AML WS
         MFSetup.Modify();
     end;
 
