@@ -63,6 +63,8 @@ codeunit 50103 "AIR MenuForecast Calculate"
         AzureMLConnector.SetOutputName('output1');
 
         AzureMLConnector.AddInputColumnName('date');
+
+        AzureMLConnector.AddInputColumnName('date');
         AzureMLConnector.AddInputColumnName('stock_count');
         AzureMLConnector.AddInputColumnName('menu_item_id');
         AzureMLConnector.AddInputColumnName('in_children_menu');
