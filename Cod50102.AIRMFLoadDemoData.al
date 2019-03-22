@@ -66,8 +66,8 @@ codeunit 50102 "AIR MF Load Demo Data"
     begin
         if not MFSetup.Get() then
             exit;
-        MFSetup."API Key ID" := 0; //insert API Key here from AML WS
-        MFSetup."API URI" := 0;  //insert API URI here from AML WS
+        MFSetup."API URI" := 0;
+        MFSetup."API Key ID" := 0;
         MFSetup.Modify();
     end;
 
@@ -106,6 +106,8 @@ codeunit 50102 "AIR MF Load Demo Data"
             Validate("Inventory Posting Group", 'RESALE');
             Modify(true);
         end;
+
+        UploadItemPicture(Item."No.");
 
         if not PostDemoEntries then
             exit;
@@ -225,4 +227,101 @@ codeunit 50102 "AIR MF Load Demo Data"
             Insert();
         end;
     end;
+
+    local procedure UploadItemPicture(ItemNo: Code[20])
+    var
+        Item: Record Item;
+        PictureURL: Text;
+        Client: HttpClient;
+        Response: HttpResponseMessage;
+        InStr: InStream;
+    begin
+        Item.Get(ItemNo);
+
+        PictureURL := GetItemPictureUrl(Item."No. 2");
+        If Not Client.Get(PictureURL, Response) then
+            exit;
+
+        Response.Content().ReadAs(InStr);
+
+        Item.Picture.ImportStream(InStr, Item.Description);
+        Item.Modify();
+    end;
+
+    local procedure GetItemPictureUrl(ItemNo: Code[20]): Text
+    begin
+        Case ItemNo of
+            '0':
+                exit('https://i.pinimg.com/originals/fa/c5/d7/fac5d7e64dad9b83adf4e9baf89f907e.jpg');
+            '1':
+                exit('https://s3-media2.fl.yelpcdn.com/bphoto/14bESw7982LpvusjT3Am8Q/o.jpg');
+            '2':
+                exit('https://growfood.pro/blog/wp-content/uploads/2017/11/yayca-pravilnoe-pitanie2.jpg');
+            '3':
+                exit('https://assets.rbl.ms/14520696/980x.jpg');
+            '4':
+                exit('http://kzd1000.ru/images/cms/data/sendvichnica_-_buterbrodnica_elektricheskaya_v-_6152_na_4_sht_3.jpg');
+            '5':
+                exit('https://d1wv4dwa0ti2j0.cloudfront.net/live/img/production/detail/ice-cream/cartons_rich-creamy_classic-chocolate.jpg');
+            '6':
+                exit('https://www.carriesexperimentalkitchen.com/wp-content/uploads/2014/03/Corned-Beef-Hash-cek.jpg');
+            '7':
+                exit('https://www.foodtrients.com/wp-content/uploads/2016/05/crab-civiche-1024x720.jpg');
+            '8':
+                exit('https://static.fanpage.it/wp-content/uploads/sites/21/2017/12/crackers.jpg');
+            '9':
+                exit('https://www.friendshipbreadkitchen.com/wp-content/uploads/2011/02/Cream-Cheese-Frosting-3.jpg');
+            '10':
+                exit('https://look.com.ua/pic/201505/1920x1080/look.com.ua-119386.jpg');
+            '11':
+                exit('https://static01.nyt.com/images/2017/07/13/multimedia/French-Fries_SOCIAL_still/French-Fries_SOCIAL_still-videoSixteenByNineJumbo1600.jpg');
+            '12':
+                exit('https://ph.toluna.com/dpolls_images/2018/12/09/8ae89ac8-3fea-457e-ab2a-cd3f47a5fdb1.jpg');
+            '13':
+                exit('https://img3.badfon.ru/original/2048x1360/2/ff/vinograd-krasnyy-grozdi-kust-1636.jpg');
+            '14':
+                exit('https://fermilon.ru/wp-content/uploads/2017/05/1-27.jpg');
+            '15':
+                exit('https://img.delicious.com.au/8_W_mBr_/w1200/del/2015/10/steamed-orange-puddings-13523-1.jpg');
+            '16':
+                exit('http://s1.1zoom.me/b5050/748/Orange_fruit_Juice_Fruit_443369_1920x1200.jpg');
+            '17':
+                exit('https://res.cloudinary.com/uktv/image/upload/v1435307591/avhhshxr7pm6gocfytqo.jpg');
+            '18':
+                exit('https://wallbox.ru/resize/2560x1600/wallpapers/main2/201725/1497981115594960bbe84331.73238678.jpg');
+            '19':
+                exit('http://marieclaire.com.my/wp-content/uploads/2016/04/Oyster-shooters-1.jpg');
+            '20':
+                exit('https://www.artsfon.com/pic/201708/1680x1050/artsfon.com-114222.jpg');
+            '21':
+                exit('https://getbg.net/upload/full/www.GetBg.net_2017Food___Berries_and_fruits_and_nuts_Juicy_ripe_blue_plums_113021_.jpg');
+            '22':
+                exit('http://fb.ru/misc/i/gallery/13662/2977215.jpg');
+            '23':
+                exit('https://wmpics.pics/dl-COUA.jpg');
+            '24':
+                exit('https://datysho.ru/wp-content/uploads/2018/11/04-15.jpg');
+            '25':
+                exit('https://vzboltay.com/uploads/posts/2019-01/1548013359_sauternes-retina.jpg');
+            '26':
+                exit('https://www.incredibleegg.org/wp-content/uploads/Scrambled-with-Milk-930x620.jpg');
+            '27':
+                exit('https://assets.bonappetit.com/photos/5b3bed6d02847f05a1933429/master/pass/ba-best-shrimp-cocktail-2.jpg');
+            '28':
+                exit('https://rfsdelivers.com/images/restaurant-inc/the-dish/dish-shrimp-salad.jpg');
+            '29':
+                exit('https://cdn.pixabay.com/photo/2018/08/20/07/01/tomatoes-3618281_1280.jpg');
+            '30':
+                exit('https://images.csmonitor.com/csm/2012/07/cajuncorn.jpg');
+            '31':
+                exit('http://www.simplebites.net/wp-content/uploads/2012/03/prunes.jpg');
+            '32':
+                exit('https://indianagentledentist.com/abbeville/wp-content/uploads/sites/22/2018/03/iStock-514149368.jpg');
+            '33':
+                exit('https://images8.alphacoders.com/387/387276.jpg');
+            '34':
+                exit('http://www.misskitchenwitch.com/blog/wp-content/uploads/2013/08/RicePudding1.jpg');
+        End;
+    end;
+
 }

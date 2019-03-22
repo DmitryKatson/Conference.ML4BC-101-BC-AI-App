@@ -2,6 +2,11 @@ codeunit 50100 "AIR MenuForecast Install"
 {
     Subtype = Install;
 
+    trigger OnInstallAppPerDatabase()
+    begin
+        EnableWebServicesCallsInTheSandbox();
+    end;
+
     trigger OnInstallAppPerCompany()
     begin
         if not isEvaluationCompany() then
@@ -9,6 +14,22 @@ codeunit 50100 "AIR MenuForecast Install"
 
         SetupMenuForecastWithDefaultValues();
         LoadDemoData();
+    end;
+
+    local procedure EnableWebServicesCallsInTheSandbox()
+    var
+        NavAppSetting: Record "NAV App Setting";
+        TenantMgt: Codeunit "Tenant Management";
+        AppInfo: ModuleInfo;
+    begin
+        NavApp.GetCurrentModuleInfo(AppInfo);
+
+        If TenantMgt.IsSandbox() Then begin
+            NavAppSetting."App ID" := AppInfo.Id();
+            NavAppSetting."Allow HttpClient Requests" := true;
+            if not NavAppSetting.Insert() then
+                NavAppSetting.Modify();
+        end;
     end;
 
     local procedure isEvaluationCompany(): Boolean

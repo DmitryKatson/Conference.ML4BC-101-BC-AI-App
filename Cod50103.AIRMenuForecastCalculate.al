@@ -62,15 +62,29 @@ codeunit 50103 "AIR MenuForecast Calculate"
         AzureMLConnector.SetInputName('input1');
         AzureMLConnector.SetOutputName('output1');
 
-        AzureMLConnector.AddInputColumnName(); //fill column label here
+        AzureMLConnector.AddInputColumnName('date');
+        AzureMLConnector.AddInputColumnName('stock_count');
+        AzureMLConnector.AddInputColumnName('menu_item_id');
+        AzureMLConnector.AddInputColumnName('in_children_menu');
+        AzureMLConnector.AddInputColumnName('fest_name');
+        AzureMLConnector.AddInputColumnName('Children_Event');
+        AzureMLConnector.AddInputColumnName('Music_Event');
+        AzureMLConnector.AddInputColumnName('max_stock_quantity');
         // repeat the same for all columns in the API input schema
 
         AzureMLConnector.AddInputRow();
 
-        AzureMLConnector.AddInputValue(); //fill column value here
+        AzureMLConnector.AddInputValue(Format(ForecastDate));
+        AzureMLConnector.AddInputValue(Format(Item.GetCurrentInventory));
+        AzureMLConnector.AddInputValue(Item."No. 2");
+        AzureMLConnector.AddInputValue(Format(CheckIfItemMenuBelongsToChildrenMenu(Item)));
+        AzureMLConnector.AddInputValue(GetFestivalName(ForecastDate));
+        AzureMLConnector.AddInputValue(Format(CheckIfChildrenEvent(ForecastDate)));
+        AzureMLConnector.AddInputValue(Format(CheckIfMusicEvent(ForecastDate)));
+        AzureMLConnector.AddInputValue(Format(Item."Maximum Inventory"));
         // repeat the same for all columns in the API input schema
 
-        AzureMLConnector.SendToAzureML(false);
+        AzureMLConnector.SendToAzureML();
 
         IF AzureMLConnector.GetOutput(1, 1, PredictionSales) then //change AML output schema, if needed
             PopulateForecastResult(Item."No.", ForecastDate, PredictionSales)
@@ -121,4 +135,37 @@ codeunit 50103 "AIR MenuForecast Calculate"
         Evaluate(PredictionValue, PredictionSales);
         MFPopulate.PopulateForecastResult(ItemNo, ForecastDate, PredictionValue);
     end;
+
+
+    local procedure PredictSomethingUsingML(featureValue1: text; featureValue2: text) prediction: text
+    var
+        AzureMLConnector: Codeunit "Azure ML Connector";
+        APIKey: text;
+        Uri: Text;
+
+    begin
+        APIKey := 'some key';
+        Uri := 'some uri';
+
+        AzureMLConnector.Initialize(APIKey, Uri, 30);
+        AzureMLConnector.SetInputName('input1');
+        AzureMLConnector.SetOutputName('output1');
+
+        AzureMLConnector.AddInputColumnName('feature1');
+        AzureMLConnector.AddInputColumnName('feature2');
+        // repeat the same for all columns in the API input schema
+
+        AzureMLConnector.AddInputRow();
+
+        AzureMLConnector.AddInputValue(featureValue1);
+        AzureMLConnector.AddInputValue(featureValue2);
+        // repeat the same for all columns in the API input schema
+
+        AzureMLConnector.SendToAzureML();
+
+        if not AzureMLConnector.GetOutput(1, 1, prediction) then //change AML output schema, if needed
+            exit('0');
+
+    end;
+
 }

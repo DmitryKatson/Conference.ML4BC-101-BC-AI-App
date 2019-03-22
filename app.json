@@ -26,6 +26,6 @@
     "from": 50100,
     "to": 50149
   },
-  "runtime": "2.3",
+  "runtime": "2.4",
   "target": "Extension"
 }
