@@ -26,6 +26,6 @@
     "from": 50100,
     "to": 50149
   },
-  "runtime": "2.0 (Business Central Fall 2018)",
-  "target": "Internal"
+  "runtime": "2.3",
+  "target": "Extension"
 }
