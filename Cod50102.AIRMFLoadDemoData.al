@@ -107,7 +107,7 @@ codeunit 50102 "AIR MF Load Demo Data"
             Modify(true);
         end;
 
-        UploadItemPicture(Item);
+        UploadItemPicture(Item."No.");
 
         if not PostDemoEntries then
             exit;
@@ -228,13 +228,15 @@ codeunit 50102 "AIR MF Load Demo Data"
         end;
     end;
 
-    local procedure UploadItemPicture(var Item: Record Item)
+    local procedure UploadItemPicture(ItemNo: code[20])
     var
         PictureURL: Text;
         Client: HttpClient;
         Response: HttpResponseMessage;
         InStr: InStream;
+        Item: Record Item;
     begin
+        Item.get(ItemNo);
 
         PictureURL := GetItemPictureUrl(Item."No. 2");
         If Not Client.Get(PictureURL, Response) then

@@ -5,7 +5,7 @@
             "name": "Your own server",
             "type": "al",
             "request": "launch",
-            "server": "http://ML101CC",
+            "server": "http://BCLatestUS",
             "serverInstance": "nav",
             "tenant": "default",
             "authentication": "UserPassword"
